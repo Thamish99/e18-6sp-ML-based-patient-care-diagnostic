@@ -205,7 +205,7 @@ class _register_userState extends State<register_user> {
     return TextFormField(
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Enter Height';
+          return 'Enter Height (m)';
         }
         return null;
       },
@@ -222,7 +222,7 @@ class _register_userState extends State<register_user> {
           FontAwesomeIcons.ruler,
           color: Colors.black,
         ),
-        hintText: "Height",
+        hintText: "Height (m)",
         hintStyle: TextStyle(color: Colors.grey),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(
@@ -241,7 +241,7 @@ class _register_userState extends State<register_user> {
     return TextFormField(
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Enter Weight';
+          return 'Enter Weight(Kg)';
         }
         return null;
       },
@@ -258,7 +258,7 @@ class _register_userState extends State<register_user> {
           FontAwesomeIcons.ruler,
           color: Colors.black,
         ),
-        hintText: "weight",
+        hintText: "Weight (Kg)",
         hintStyle: TextStyle(color: Colors.grey),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(
@@ -348,129 +348,86 @@ class _register_userState extends State<register_user> {
         title: Text('Virtual Aid'),
         backgroundColor: Color(0xFFAC6EBB),
       ),
-      body: SingleChildScrollView(
-        child: ModalProgressHUD(
-          inAsyncCall: showSpinner,
-          child: SafeArea(
-            child: Container(
-              // decoration: BoxDecoration(
-              //   gradient: LinearGradient(
-              //     begin: Alignment.topRight,
-              //     end: Alignment.bottomLeft,
-              //     colors: [
-              //       Colors.indigo.shade200,
-              //       Colors.deepOrange.shade200,
-              //     ],
-              //   ),
-              // ),
-              color: Color(0xFF8008CA),
-              child: Column(
-                children: [
-                  // SizedBox(
-                  //   height: 10,
-                  // ),
-                  heading(
-                      string: "Register",
-                      icon: FontAwesomeIcons.user,
-                      space: 40),
-                  const Divider(
-                    height: 10,
-                    thickness: 2,
-                    indent: 20,
-                    endIndent: 20,
-                    color: Colors.white,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(30),
-                    child: Form(
-                      key: _formkey,
-                      child: Column(
-                        children: <Widget>[
-                          _buildemailField(),
-                          SizedBox(height: 20),
-                          _buildpoliceidField(),
-                          SizedBox(height: 20),
-                          _buildpasswordField(),
-                          SizedBox(height: 20),
-                          _buildconfirmpasswordField(),
-                          SizedBox(height: 20),
-                          _buildgender(),
-                          SizedBox(height: 20),
-                          _buildage(),
-                          SizedBox(height: 20),
-                          _buildheight(),
-                          SizedBox(height: 20),
-                          _buildweight(),
-                          SizedBox(height: 20),
-                          ElevatedButton(
-                            onPressed: () async {
-                              if (!_formkey.currentState!.validate()) {
-                                return;
-                              }
-                              _formkey.currentState!.save();
-                              if (password != confirmpassword) {
-                                showDialog<void>(
-                                  context: context,
-                                  barrierDismissible:
-                                      false, // user must tap button!
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title:
-                                          const Text('Passwords do not match'),
-                                      content: SingleChildScrollView(
-                                        child: ListBody(
-                                          children: const <Widget>[
-                                            Text(
-                                                'Please enter password again.'),
-                                          ],
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: const Text('Okay'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                                return;
-                              }
-                              showSpinner = true;
-                              try {
-                                final newUser =
-                                    await _auth.createUserWithEmailAndPassword(
-                                        email: email, password: password);
-                                showSpinner = false;
-                                if (newUser != null) {
-                                  //add to database
-                                  users.add({
-                                    "email": email,
-                                    "name": policeid,
-                                    "password": password,
-                                    "gender": Gender,
-                                    "height": height,
-                                    "weight": weight,
-                                    "age": age,
-                                    "description": "",
-                                  }).then((value) => print("User added"));
+      body: Padding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: SingleChildScrollView(
+          child: ModalProgressHUD(
+            inAsyncCall: showSpinner,
+            child: SafeArea(
+              child: Container(
+                // decoration: BoxDecoration(
+                //   gradient: LinearGradient(
+                //     begin: Alignment.topRight,
+                //     end: Alignment.bottomLeft,
+                //     colors: [
+                //       Colors.indigo.shade200,
+                //       Colors.deepOrange.shade200,
+                //     ],
+                //   ),
+                // ),
+                color: Color(0xFF8008CA),
+                child: Column(
+                  children: [
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+                    heading(
+                        string: "Register",
+                        icon: FontAwesomeIcons.user,
+                        space: 40),
+                    const Divider(
+                      height: 10,
+                      thickness: 2,
+                      indent: 20,
+                      endIndent: 20,
+                      color: Colors.white,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(30),
+                      child: Form(
+                        key: _formkey,
+                        child: Column(
+                          children: <Widget>[
+                            _buildemailField(),
+                            SizedBox(height: 20),
+                            _buildpoliceidField(),
+                            SizedBox(height: 20),
+                            _buildpasswordField(),
+                            SizedBox(height: 20),
+                            _buildconfirmpasswordField(),
+                            SizedBox(height: 20),
+                            _buildgender(),
+                            SizedBox(height: 20),
+                            _buildage(),
+                            SizedBox(height: 20),
+                            _buildheight(),
+                            SizedBox(height: 20),
+                            _buildweight(),
+                            SizedBox(height: 20),
+                            ElevatedButton(
+                              onPressed: () async {
+                                if (!_formkey.currentState!.validate()) {
+                                  return;
+                                }
+                                _formkey.currentState!.save();
+                                if (password != confirmpassword) {
                                   showDialog<void>(
                                     context: context,
                                     barrierDismissible:
                                         false, // user must tap button!
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: const Text('Succesfull!'),
+                                        title: const Text(
+                                            'Passwords do not match'),
                                         content: SingleChildScrollView(
                                           child: ListBody(
                                             children: const <Widget>[
                                               Text(
-                                                  'Registered Successfully. Login to continue'),
+                                                  'Please enter password again.'),
                                             ],
                                           ),
                                         ),
@@ -478,41 +435,88 @@ class _register_userState extends State<register_user> {
                                           TextButton(
                                             child: const Text('Okay'),
                                             onPressed: () {
-                                              Navigator.pushAndRemoveUntil(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          welcome_screen()),
-                                                  (r) => false);
+                                              Navigator.of(context).pop();
                                             },
                                           ),
                                         ],
                                       );
                                     },
                                   );
+                                  return;
                                 }
-                              } catch (e) {
-                                print(e);
-                              }
-                            },
-                            child: Text("Register",
-                                style: TextStyle(color: Colors.white)),
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStatePropertyAll<Color>(
-                                  Color(0xFFAC6EBB),
-                                ),
-                                minimumSize: MaterialStatePropertyAll<Size>(
-                                    Size(100, 40))),
-                          ),
-                          SizedBox(
-                            height: 200,
-                          ),
-                        ],
+                                showSpinner = true;
+                                try {
+                                  final newUser = await _auth
+                                      .createUserWithEmailAndPassword(
+                                          email: email, password: password);
+                                  showSpinner = false;
+                                  if (newUser != null) {
+                                    //add to database
+                                    users.add({
+                                      "email": email,
+                                      "name": policeid,
+                                      "password": password,
+                                      "gender": Gender,
+                                      "height": height,
+                                      "weight": weight,
+                                      "age": age,
+                                      "description": "",
+                                    }).then((value) => print("User added"));
+                                    showDialog<void>(
+                                      context: context,
+                                      barrierDismissible:
+                                          false, // user must tap button!
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text('Succesfull!'),
+                                          content: SingleChildScrollView(
+                                            child: ListBody(
+                                              children: const <Widget>[
+                                                Text(
+                                                    'Registered Successfully. Login to continue'),
+                                              ],
+                                            ),
+                                          ),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              child: const Text('Okay'),
+                                              onPressed: () {
+                                                Navigator.pushAndRemoveUntil(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            welcome_screen()),
+                                                    (r) => false);
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                              child: Text("Register",
+                                  style: TextStyle(color: Colors.white)),
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStatePropertyAll<Color>(
+                                    Color(0xFFAC6EBB),
+                                  ),
+                                  minimumSize: MaterialStatePropertyAll<Size>(
+                                      Size(100, 40))),
+                            ),
+                            SizedBox(
+                              height: 50,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

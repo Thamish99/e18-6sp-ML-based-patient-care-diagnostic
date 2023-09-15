@@ -329,164 +329,168 @@ class _diabetesState extends State<diabetes> {
         title: Text('Diabetes Prediction'),
         backgroundColor: Color(0xFFAC6EBB),
       ),
-      body: SingleChildScrollView(
-        child: ModalProgressHUD(
-          inAsyncCall: showSpinner,
-          child: SafeArea(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                    Color(0xFF8008CA),
-                    Colors.white,
-                  ],
+      body: Padding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: SingleChildScrollView(
+          child: ModalProgressHUD(
+            inAsyncCall: showSpinner,
+            child: SafeArea(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [
+                      Color(0xFF8008CA),
+                      Colors.white,
+                    ],
+                  ),
                 ),
-              ),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  heading(
-                      string: "Enter Parameters",
-                      icon: FontAwesomeIcons.ruler,
-                      space: 40),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(30),
-                    child: Form(
-                      key: _formkey,
-                      child: Column(
-                        children: <Widget>[
-                          _buildage(),
-                          SizedBox(height: 20),
-                          _buildpregnancies(),
-                          SizedBox(height: 20),
-                          _buildglucose(),
-                          SizedBox(height: 20),
-                          _buildBloodPressure(),
-                          SizedBox(height: 20),
-                          _buildSkinThickness(),
-                          SizedBox(height: 20),
-                          _buildInsulin(),
-                          SizedBox(height: 20),
-                          _buildBMI(),
-                          SizedBox(height: 20),
-                          _buildDiabetesPedigreeFunction(),
-                          ElevatedButton(
-                            onPressed: () async {
-                              if (!_formkey.currentState!.validate()) {
-                                return;
-                              }
-                              _formkey.currentState!.save();
-
-                              final response = await http.post(
-                                Uri.parse(
-                                    'https://thamish-ml-based-patient-care.onrender.com/diabetes'),
-                                headers: <String, String>{
-                                  'Content-Type':
-                                      'application/json; charset=UTF-8',
-                                },
-                                body: jsonEncode(<String, double>{
-                                  "Pregnancies": pregnancies,
-                                  "Glucose": glucose,
-                                  "BloodPressure": BloodPressure,
-                                  "SkinThickness": SkinThickness,
-                                  "Insulin": Insulin,
-                                  "BMI": BMI,
-                                  "DiabetesPedigreeFunction":
-                                      DiabetesPedigreeFunction,
-                                  "Age": age
-                                }),
-                              );
-                              print(response.statusCode);
-                              if (response.statusCode == 200) {
-                                var prediction = jsonDecode(response.body);
-                                int predict =
-                                    int.parse(prediction["prediction"]);
-                                var msg = "";
-                                if (predict == 1) {
-                                  msg =
-                                      "You have a high chance of having Diabetes";
-                                } else {
-                                  msg =
-                                      "You have a high chance of having Diabetes";
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    heading(
+                        string: "Enter Parameters",
+                        icon: FontAwesomeIcons.ruler,
+                        space: 40),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(30),
+                      child: Form(
+                        key: _formkey,
+                        child: Column(
+                          children: <Widget>[
+                            _buildage(),
+                            SizedBox(height: 20),
+                            _buildpregnancies(),
+                            SizedBox(height: 20),
+                            _buildglucose(),
+                            SizedBox(height: 20),
+                            _buildBloodPressure(),
+                            SizedBox(height: 20),
+                            _buildSkinThickness(),
+                            SizedBox(height: 20),
+                            _buildInsulin(),
+                            SizedBox(height: 20),
+                            _buildBMI(),
+                            SizedBox(height: 20),
+                            _buildDiabetesPedigreeFunction(),
+                            ElevatedButton(
+                              onPressed: () async {
+                                if (!_formkey.currentState!.validate()) {
+                                  return;
                                 }
+                                _formkey.currentState!.save();
 
-                                showDialog<void>(
-                                  context: context,
-                                  barrierDismissible:
-                                      false, // user must tap button!
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Diagnosis'),
-                                      content: SingleChildScrollView(
-                                        child: ListBody(
-                                          children: <Widget>[
-                                            Text(msg),
-                                          ],
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: const Text('Okay'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ],
-                                    );
+                                final response = await http.post(
+                                  Uri.parse(
+                                      'https://thamish-ml-based-patient-care.onrender.com/diabetes'),
+                                  headers: <String, String>{
+                                    'Content-Type':
+                                        'application/json; charset=UTF-8',
                                   },
+                                  body: jsonEncode(<String, double>{
+                                    "Pregnancies": pregnancies,
+                                    "Glucose": glucose,
+                                    "BloodPressure": BloodPressure,
+                                    "SkinThickness": SkinThickness,
+                                    "Insulin": Insulin,
+                                    "BMI": BMI,
+                                    "DiabetesPedigreeFunction":
+                                        DiabetesPedigreeFunction,
+                                    "Age": age
+                                  }),
                                 );
-                              } else {
-                                showDialog<void>(
-                                  context: context,
-                                  barrierDismissible:
-                                      false, // user must tap button!
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Unsuccessful'),
-                                      content: SingleChildScrollView(
-                                        child: ListBody(
-                                          children: const <Widget>[
-                                            Text('Please try again!'),
-                                          ],
+                                print(response.statusCode);
+                                if (response.statusCode == 200) {
+                                  var prediction = jsonDecode(response.body);
+                                  int predict =
+                                      int.parse(prediction["prediction"]);
+                                  var msg = "";
+                                  if (predict == 1) {
+                                    msg =
+                                        "You have a high chance of having Diabetes";
+                                  } else {
+                                    msg =
+                                        "You have a high chance of having Diabetes";
+                                  }
+
+                                  showDialog<void>(
+                                    context: context,
+                                    barrierDismissible:
+                                        false, // user must tap button!
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Diagnosis'),
+                                        content: SingleChildScrollView(
+                                          child: ListBody(
+                                            children: <Widget>[
+                                              Text(msg),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: const Text('Okay'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('Okay'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  showDialog<void>(
+                                    context: context,
+                                    barrierDismissible:
+                                        false, // user must tap button!
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Unsuccessful'),
+                                        content: SingleChildScrollView(
+                                          child: ListBody(
+                                            children: const <Widget>[
+                                              Text('Please try again!'),
+                                            ],
+                                          ),
                                         ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              }
-                            },
-                            child: Text("Predict",
-                                style: TextStyle(color: Colors.white)),
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStatePropertyAll<Color>(
-                                        Color(0xFFAC6EBB)),
-                                minimumSize: MaterialStatePropertyAll<Size>(
-                                    Size(100, 40))),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ],
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('Okay'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                              child: Text("Predict",
+                                  style: TextStyle(color: Colors.white)),
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStatePropertyAll<Color>(
+                                          Color(0xFFAC6EBB)),
+                                  minimumSize: MaterialStatePropertyAll<Size>(
+                                      Size(100, 40))),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

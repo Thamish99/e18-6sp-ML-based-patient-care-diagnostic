@@ -408,8 +408,7 @@ class _register_vehicleState extends State<register_vehicle> {
                                       content: SingleChildScrollView(
                                         child: ListBody(
                                           children: const <Widget>[
-                                            Text(
-                                                'Vehicle Registered Successfully!'),
+                                            Text('Succesfully Changed!'),
                                           ],
                                         ),
                                       ),
@@ -474,7 +473,7 @@ class _register_vehicleState extends State<register_vehicle> {
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStatePropertyAll<Color>(
-                                        Color(0xFFFBF8BE)),
+                                        Color(0xFFAC6EBB)),
                                 minimumSize: MaterialStatePropertyAll<Size>(
                                     Size(100, 40))),
                           ),

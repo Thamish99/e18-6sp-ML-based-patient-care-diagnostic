@@ -510,175 +510,179 @@ class _heartState extends State<heart> {
         title: Text('Heart Disease Prediction'),
         backgroundColor: Color(0xFFAC6EBB),
       ),
-      body: SingleChildScrollView(
-        child: ModalProgressHUD(
-          inAsyncCall: showSpinner,
-          child: SafeArea(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                    Color(0xFF8008CA),
-                    Colors.white,
-                  ],
+      body: Padding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: SingleChildScrollView(
+          child: ModalProgressHUD(
+            inAsyncCall: showSpinner,
+            child: SafeArea(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [
+                      Color(0xFF8008CA),
+                      Colors.white,
+                    ],
+                  ),
                 ),
-              ),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  heading(
-                      string: "Enter Parameters",
-                      icon: FontAwesomeIcons.ruler,
-                      space: 40),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(30),
-                    child: Form(
-                      key: _formkey,
-                      child: Column(
-                        children: <Widget>[
-                          //_buildage(),
-                          //SizedBox(height: 20),
-                          _buildcreatinine_phosphokinase(),
-                          SizedBox(height: 20),
-                          _buildejection_fraction(),
-                          SizedBox(height: 20),
-                          _buildplatelets(),
-                          SizedBox(height: 20),
-                          _buildserum_creatinine(),
-                          SizedBox(height: 20),
-                          _buildserum_sodium(),
-                          SizedBox(height: 20),
-                          // _buildsex(),
-                          // SizedBox(height: 20),
-                          _buildiabetes(),
-                          SizedBox(height: 20),
-                          _buildhigh_blood_pressure(),
-                          SizedBox(height: 20),
-                          _buildanaemia(),
-                          SizedBox(height: 20),
-                          _buildsmoke(),
-                          ElevatedButton(
-                            onPressed: () async {
-                              if (!_formkey.currentState!.validate()) {
-                                return;
-                              }
-                              _formkey.currentState!.save();
-
-                              final response = await http.post(
-                                Uri.parse(
-                                    'https://thamish-ml-based-patient-care.onrender.com/heart_failure'),
-                                headers: <String, String>{
-                                  'Content-Type':
-                                      'application/json; charset=UTF-8',
-                                },
-                                body: jsonEncode(<String, double>{
-                                  "age": age,
-                                  "anaemia": anaemia,
-                                  "creatinine_phosphokinase":
-                                      creatininePhosphokinase,
-                                  "diabetes": diabetes,
-                                  "ejection_fraction": ejectionFraction,
-                                  "high_blood_pressure": highBloodPressure,
-                                  "platelets": platelets,
-                                  "serum_creatinine": serumCreatinine,
-                                  "serum_sodium": serumSodium,
-                                  "sex": sex,
-                                  "smoking": smoking,
-                                  "time": time
-                                }),
-                              );
-                              print(response.statusCode);
-                              if (response.statusCode == 200) {
-                                print(response.body);
-                                var prediction = jsonDecode(response.body);
-                                var predict = prediction["prediction"];
-                                var message = "";
-                                print(predict);
-                                if (double.parse(predict) == 1) {
-                                  message =
-                                      "You have a High chance of having a Heart Disease.";
-                                } else {
-                                  message =
-                                      "You have a Low chance of having a Heart Disease.";
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    heading(
+                        string: "Enter Parameters",
+                        icon: FontAwesomeIcons.ruler,
+                        space: 40),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(30),
+                      child: Form(
+                        key: _formkey,
+                        child: Column(
+                          children: <Widget>[
+                            //_buildage(),
+                            //SizedBox(height: 20),
+                            _buildcreatinine_phosphokinase(),
+                            SizedBox(height: 20),
+                            _buildejection_fraction(),
+                            SizedBox(height: 20),
+                            _buildplatelets(),
+                            SizedBox(height: 20),
+                            _buildserum_creatinine(),
+                            SizedBox(height: 20),
+                            _buildserum_sodium(),
+                            SizedBox(height: 20),
+                            // _buildsex(),
+                            // SizedBox(height: 20),
+                            _buildiabetes(),
+                            SizedBox(height: 20),
+                            _buildhigh_blood_pressure(),
+                            SizedBox(height: 20),
+                            _buildanaemia(),
+                            SizedBox(height: 20),
+                            _buildsmoke(),
+                            ElevatedButton(
+                              onPressed: () async {
+                                if (!_formkey.currentState!.validate()) {
+                                  return;
                                 }
-                                print(prediction["prediction"].runtimeType);
-                                showDialog<void>(
-                                  context: context,
-                                  barrierDismissible:
-                                      false, // user must tap button!
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Diagnosis'),
-                                      content: SingleChildScrollView(
-                                        child: ListBody(
-                                          children: <Widget>[
-                                            Text(message),
-                                          ],
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: const Text('Okay'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ],
-                                    );
+                                _formkey.currentState!.save();
+
+                                final response = await http.post(
+                                  Uri.parse(
+                                      'https://thamish-ml-based-patient-care.onrender.com/heart_failure'),
+                                  headers: <String, String>{
+                                    'Content-Type':
+                                        'application/json; charset=UTF-8',
                                   },
+                                  body: jsonEncode(<String, double>{
+                                    "age": age,
+                                    "anaemia": anaemia,
+                                    "creatinine_phosphokinase":
+                                        creatininePhosphokinase,
+                                    "diabetes": diabetes,
+                                    "ejection_fraction": ejectionFraction,
+                                    "high_blood_pressure": highBloodPressure,
+                                    "platelets": platelets,
+                                    "serum_creatinine": serumCreatinine,
+                                    "serum_sodium": serumSodium,
+                                    "sex": sex,
+                                    "smoking": smoking,
+                                    "time": time
+                                  }),
                                 );
-                              } else {
-                                showDialog<void>(
-                                  context: context,
-                                  barrierDismissible:
-                                      false, // user must tap button!
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Unsuccessful'),
-                                      content: SingleChildScrollView(
-                                        child: ListBody(
-                                          children: const <Widget>[
-                                            Text('Please try again!'),
-                                          ],
+                                print(response.statusCode);
+                                if (response.statusCode == 200) {
+                                  print(response.body);
+                                  var prediction = jsonDecode(response.body);
+                                  var predict = prediction["prediction"];
+                                  var message = "";
+                                  print(predict);
+                                  if (double.parse(predict) == 1) {
+                                    message =
+                                        "You have a High chance of having a Heart Disease.";
+                                  } else {
+                                    message =
+                                        "You have a Low chance of having a Heart Disease.";
+                                  }
+                                  print(prediction["prediction"].runtimeType);
+                                  showDialog<void>(
+                                    context: context,
+                                    barrierDismissible:
+                                        false, // user must tap button!
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Diagnosis'),
+                                        content: SingleChildScrollView(
+                                          child: ListBody(
+                                            children: <Widget>[
+                                              Text(message),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: const Text('Okay'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('Okay'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  showDialog<void>(
+                                    context: context,
+                                    barrierDismissible:
+                                        false, // user must tap button!
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Unsuccessful'),
+                                        content: SingleChildScrollView(
+                                          child: ListBody(
+                                            children: const <Widget>[
+                                              Text('Please try again!'),
+                                            ],
+                                          ),
                                         ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              }
-                            },
-                            child: Text("Predict",
-                                style: TextStyle(color: Colors.white)),
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStatePropertyAll<Color>(
-                                        Color(0xFFAC6EBB)),
-                                minimumSize: MaterialStatePropertyAll<Size>(
-                                    Size(100, 40))),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ],
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('Okay'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                              child: Text("Predict",
+                                  style: TextStyle(color: Colors.white)),
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStatePropertyAll<Color>(
+                                          Color(0xFFAC6EBB)),
+                                  minimumSize: MaterialStatePropertyAll<Size>(
+                                      Size(100, 40))),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

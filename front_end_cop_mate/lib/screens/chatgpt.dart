@@ -13,7 +13,7 @@ class _chatgptState extends State<chatgpt> {
   final messages = <Map<String, String>>[];
   final textController = TextEditingController();
   final apiKey =
-      'key = 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'; // Replace with your OpenAI API key
+      "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"; // Replace with your OpenAI API key
 
   @override
   void dispose() {

@@ -422,163 +422,167 @@ class _brain_strokeState extends State<brain_stroke> {
         title: Text('Brain Stroke Prediction'),
         backgroundColor: Color(0xFF518BB8),
       ),
-      body: SingleChildScrollView(
-        child: ModalProgressHUD(
-          inAsyncCall: showSpinner,
-          child: SafeArea(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                    Color(0xFF8008CA),
-                    Colors.white,
-                  ],
+      body: Padding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: SingleChildScrollView(
+          child: ModalProgressHUD(
+            inAsyncCall: showSpinner,
+            child: SafeArea(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [
+                      Color(0xFF8008CA),
+                      Colors.white,
+                    ],
+                  ),
                 ),
-              ),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  heading(
-                      string: "Enter Parameters",
-                      icon: FontAwesomeIcons.ruler,
-                      space: 40),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(30),
-                    child: Form(
-                      key: _formkey,
-                      child: Column(
-                        children: <Widget>[
-                          _buildage(),
-                          SizedBox(height: 20),
-                          _buildgender(),
-                          SizedBox(height: 20),
-                          _buildhypertension(),
-                          SizedBox(height: 20),
-                          _buildheart_disease(),
-                          SizedBox(height: 20),
-                          _buildever_married(),
-                          SizedBox(height: 20),
-                          _buildwork_type(),
-                          SizedBox(height: 20),
-                          _buildresidence_type(),
-                          SizedBox(height: 20),
-                          _buildavg_glucose_level(),
-                          SizedBox(height: 20),
-                          _buildbmi(),
-                          SizedBox(height: 20),
-                          _buildsmoking_status(),
-                          ElevatedButton(
-                            onPressed: () async {
-                              if (!_formkey.currentState!.validate()) {
-                                return;
-                              }
-                              _formkey.currentState!.save();
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    heading(
+                        string: "Enter Parameters",
+                        icon: FontAwesomeIcons.ruler,
+                        space: 40),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(30),
+                      child: Form(
+                        key: _formkey,
+                        child: Column(
+                          children: <Widget>[
+                            _buildage(),
+                            SizedBox(height: 20),
+                            _buildgender(),
+                            SizedBox(height: 20),
+                            _buildhypertension(),
+                            SizedBox(height: 20),
+                            _buildheart_disease(),
+                            SizedBox(height: 20),
+                            _buildever_married(),
+                            SizedBox(height: 20),
+                            _buildwork_type(),
+                            SizedBox(height: 20),
+                            _buildresidence_type(),
+                            SizedBox(height: 20),
+                            _buildavg_glucose_level(),
+                            SizedBox(height: 20),
+                            _buildbmi(),
+                            SizedBox(height: 20),
+                            _buildsmoking_status(),
+                            ElevatedButton(
+                              onPressed: () async {
+                                if (!_formkey.currentState!.validate()) {
+                                  return;
+                                }
+                                _formkey.currentState!.save();
 
-                              final response = await http.post(
-                                Uri.parse(
-                                    'https://ml-model-api15.onrender.com/heart_disease'),
-                                headers: <String, String>{
-                                  'Content-Type':
-                                      'application/json; charset=UTF-8',
-                                },
-                                body: jsonEncode(<String, String>{
-                                  "age": "75",
-                                  "anaemia": "0",
-                                  "creatinine_phosphokinase": "582",
-                                  "diabetes": "0",
-                                  "ejection_fraction": "20",
-                                  "high_blood_pressure": "21",
-                                  "platelets": "265000.03",
-                                  "serum_creatinine": "1.9",
-                                  "serum_sodium": "130",
-                                  "sex": "1",
-                                  "smoking": "0",
-                                  "time": "4"
-                                }),
-                              );
-                              print(response.statusCode);
-                              if (response.statusCode == 200) {
-                                var prediction = jsonDecode(response.body);
-                                int predict = prediction["prediction"];
-                                print(prediction["prediction"].runtimeType);
-                                showDialog<void>(
-                                  context: context,
-                                  barrierDismissible:
-                                      false, // user must tap button!
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Successful!'),
-                                      content: SingleChildScrollView(
-                                        child: ListBody(
-                                          children: <Widget>[
-                                            Text("Prediction:" +
-                                                predict.toString()),
-                                          ],
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: const Text('Okay'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ],
-                                    );
+                                final response = await http.post(
+                                  Uri.parse(
+                                      'https://ml-model-api15.onrender.com/heart_disease'),
+                                  headers: <String, String>{
+                                    'Content-Type':
+                                        'application/json; charset=UTF-8',
                                   },
+                                  body: jsonEncode(<String, String>{
+                                    "age": "75",
+                                    "anaemia": "0",
+                                    "creatinine_phosphokinase": "582",
+                                    "diabetes": "0",
+                                    "ejection_fraction": "20",
+                                    "high_blood_pressure": "21",
+                                    "platelets": "265000.03",
+                                    "serum_creatinine": "1.9",
+                                    "serum_sodium": "130",
+                                    "sex": "1",
+                                    "smoking": "0",
+                                    "time": "4"
+                                  }),
                                 );
-                              } else {
-                                showDialog<void>(
-                                  context: context,
-                                  barrierDismissible:
-                                      false, // user must tap button!
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Unsuccessful'),
-                                      content: SingleChildScrollView(
-                                        child: ListBody(
-                                          children: const <Widget>[
-                                            Text('Please try again!'),
-                                          ],
+                                print(response.statusCode);
+                                if (response.statusCode == 200) {
+                                  var prediction = jsonDecode(response.body);
+                                  int predict = prediction["prediction"];
+                                  print(prediction["prediction"].runtimeType);
+                                  showDialog<void>(
+                                    context: context,
+                                    barrierDismissible:
+                                        false, // user must tap button!
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Successful!'),
+                                        content: SingleChildScrollView(
+                                          child: ListBody(
+                                            children: <Widget>[
+                                              Text("Prediction:" +
+                                                  predict.toString()),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: const Text('Okay'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('Okay'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  showDialog<void>(
+                                    context: context,
+                                    barrierDismissible:
+                                        false, // user must tap button!
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Unsuccessful'),
+                                        content: SingleChildScrollView(
+                                          child: ListBody(
+                                            children: const <Widget>[
+                                              Text('Please try again!'),
+                                            ],
+                                          ),
                                         ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              }
-                            },
-                            child: Text("Predict",
-                                style: TextStyle(color: Colors.white)),
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStatePropertyAll<Color>(
-                                        Color(0xFFAC6EBB)),
-                                minimumSize: MaterialStatePropertyAll<Size>(
-                                    Size(100, 40))),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ],
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('Okay'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                              child: Text("Predict",
+                                  style: TextStyle(color: Colors.white)),
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStatePropertyAll<Color>(
+                                          Color(0xFFAC6EBB)),
+                                  minimumSize: MaterialStatePropertyAll<Size>(
+                                      Size(100, 40))),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
